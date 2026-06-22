@@ -1,0 +1,141 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<div class="container my-5">
+  <h2 class="text-center mb-4">Checkout</h2>
+
+  <!-- Order Summary (read-only) -->
+  <div class="row justify-content-center">
+    <div class="col-md-6 mb-4">
+      <h4 class="text-center"><strong>Order Summary</strong></h4>
+      <div class="card shadow-lg">
+        <!-- Increased shadow effect for card -->
+        <div class="card-body">
+          <table class="table table-bordered text-center">
+            <thead class="table" style="background-color: #298d33;">
+              <!-- Added a primary background color to the header -->
+              <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order_item in order.order_items.all %}
+              <tr class="table-light">
+                <!-- Light background for alternate rows -->
+                <td>{{ order_item.item.name }}</td>
+                <td>{{ order_item.quantity }}</td>
+                <td>XAF {{ order_item.item.price }}</td>
+                <td>XAF {{ order_item.get_total_item_price }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer text-center">
+          <h5 class="card-title">Total: XAF {{ order.get_total_order_price }}</h5>
+        </div>
+      </div>
+    </div>
+
+    <!-- Billing and Shipping Address Form (editable) -->
+    <div class="col-md-6">
+      <h4 class="text-center"><strong>Billing and Shipping Address</strong></h4>
+      <div class="card shadow-lg">
+        <!-- Increased shadow effect for card -->
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+              <label for="billing_address">Billing Address:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="billing_address"
+                name="billing_address"
+                value="{{ order.billing_address }}"
+                required
+                style="max-width: 400px; margin: 0 auto"
+              />
+            </div>
+            <div class="form-group mb-3">
+              <label for="shipping_address">Shipping Address:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="shipping_address"
+                name="shipping_address"
+                value="{{ order.shipping_address }}"
+                required
+                style="max-width: 400px; margin: 0 auto"
+              />
+            </div>
+            <div class="form-group mb-3">
+              <label for="total"></label>
+              <input
+                type="hidden"
+                class="form-control"
+                id="total"
+                name="total"
+                value="{{ order.get_total_order_price }}"
+                style="max-width: 400px; margin: 0 auto"
+              />
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-4">
+              <h4>Total Amount: XAF {{ order.get_total_order_price }}</h4>
+              <a href="{% url 'payment_page' %}" class="btn" style="background-color: #060707; color: white;">Proceed to Checkout</a
+              >
+            </div>
+
+            <!-- Display form errors -->
+            {% if form.errors %}
+            <div class="alert alert-danger mt-3">
+              <ul>
+                {% for field, errors in form.errors.items %} {% for error in errors %}
+                <li>{{ error }}</li>
+                {% endfor %} {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Additional Styles for Table and Buttons */
+  .table {
+    transition: all 0.2s ease; /* Smooth transition for table hover effect */
+  }
+
+  .table tr:hover {
+    background-color: #f1f1f1; /* Light background on row hover */
+  }
+
+  .table-light {
+    background-color: #f8f9fa; /* Light color for alternate rows */
+  }
+
+  /* Card Shadow and Design */
+  .card {
+    border: none; /* Remove card border */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increased shadow for more depth */
+    transition: box-shadow 0.3s ease; /* Smooth transition for hover effect */
+  }
+
+  .card:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Even deeper shadow on hover */
+  }
+
+  .card-body {
+    border-radius: 10px; /* Rounded corners for card */
+  }
+
+  .card-footer {
+    background-color: #f1f1f1; /* Footer background color */
+    border-radius: 0 0 10px 10px; /* Rounded corners for footer */
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,117 @@
+<!-- cart.html -->
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container my-5">
+    <h2 class="mb-4 text-center">Your Cart</h2>
+    
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
+                <tr class="table-primary"> <!-- Added a color to the heading row -->
+                    <th scope="col">Item</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order_item in order.order_items.all %}
+                    <tr>
+                        <td class="align-middle">
+                            {% if order_item.item.image %}
+                            <img src="{{ order_item.item.image.url }}" alt="{{ order_item.item.name }}" style="width: 50px; height: 50px;" class="img-thumbnail me-2">
+                            {% else %}
+                            <img src="{% static 'images/default-product.jpg' %}" alt="{{ order_item.item.name }}" style="width: 50px; height: 50px;" class="img-thumbnail me-2">
+                            {% endif %}
+                            {{ order_item.item.name }}
+                        </td>
+                        <td class="align-middle">
+                            <div class="input-group">
+                                <a href="{% url 'remove_from_cart' order_item.item.id %}" class="btn btn-outline-danger btn-sm" title="Decrease Quantity">
+                                    <i class="bi bi-dash-circle"></i>
+                                </a>
+                                <span class="input-group-text">{{ order_item.quantity }}</span>
+                                <a href="{% url 'add_to_cart' order_item.item.id %}" class="btn btn-outline-success btn-sm" title="Increase Quantity">
+                                    <i class="bi bi-plus-circle"></i>
+                                </a>
+                            </div>
+                        </td>
+                        <td class="align-middle">XAF {{ order_item.item.price }}</td>
+                        <td class="align-middle">XAF {{ order_item.get_total_item_price }}</td>
+                        <td class="align-middle">
+                            <a href="{% url 'remove_from_cart' order_item.item.id %}" class="btn btn-danger btn-sm" title="Remove Item">
+                                <i class="bi bi-trash"></i> Remove
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">Your cart is empty.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <h4>Total Amount: XAF {{ order.get_total_order_price }}</h4>
+        <a href="{% url 'checkout' %}" class="btn" style="background-color: #060707; color: white;">Proceed to Checkout</a>
+    </div>
+</div>
+
+<style>
+    .table {
+        border-radius: 0.5rem; /* Rounded corners for table */
+        overflow: hidden; /* Prevents table from overflowing its parent */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+    }
+
+    .table thead th {
+        background-color: #28a745; /* Blue background for heading */
+        color: white; /* White text color for heading */
+        font-weight: bold; /* Bold header text */
+        transition: background-color 0.3s; /* Transition effect */
+    }
+
+    .table thead th:hover {
+        background-color: #28a745; /* Darker blue on hover */
+    }
+
+    .table tbody tr:hover {
+        background-color: #f1f1f1; /* Light grey background on row hover */
+    }
+
+    .table td {
+        vertical-align: middle; /* Center content vertically */
+    }
+
+    .btn {
+        transition: background-color 0.3s, color 0.3s; /* Smooth button transition */
+    }
+
+    .btn:hover {
+        background-color: #28a745; /* Darker blue on hover */
+        color: white; /* White text on hover */
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545; /* Red background on hover for danger buttons */
+        color: white; /* White text on hover */
+    }
+
+    .btn-outline-success:hover {
+        background-color: #28a745; /* Green background on hover for success buttons */
+        color: white; /* White text on hover */
+    }
+
+    @media (max-width: 768px) {
+        .btn {
+            width: 100%; /* Full-width buttons on small screens */
+            margin-bottom: 5px; /* Spacing between buttons */
+        }
+    }
+</style>
+{% endblock %}

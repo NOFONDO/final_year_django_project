@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="card">
+<div class="about-section">
+    <div class="container1">
+        <div class="image-background1"><img src="{% static 'images/Darshan.png' %}" alt="Background Image"></div>
+        <div class="text-content1">
+            <div class="overlay-effect1"></div>
+            <div class="info-card1">
+                <h1>About Us</h1>
+                <p>Welcome to <span class="emphasis">AGRIFARM</span>! We are dedicated to providing farmers with the best resources and support for their agricultural needs.</p>
+                <p>Our mission is to connect farmers with quality products, from seeds to tools, ensuring sustainable farming practices and a better future for all.</p>
+                <p>Led by a team of agricultural enthusiasts, we aim to empower farmers through education and access to technology, helping them thrive in a competitive market.</p>
+                <p>Thank you for being part of our community!</p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<style>
+    .about-section {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+        background: url('{% static 'images/image.png' %}'); /* Light green gradient */
+        background-size: 100%; /* Ensure background covers the area */
+        height: 80vh; /* Full viewport height */
+        width: 100vh;
+        position: relative; /* Relative positioning for overlay */
+    }
+    
+    .container1 {
+        display: flex;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .image-background1 {
+        flex: 2;
+        background-image: url('image.png');
+        background-size: cover;
+        background-position: center;
+        animation: slideIn 1s ease-in-out;
+        position: relative;
+        float: left;
+    }
+    
+    .text-content1 {
+        flex: 1;
+        display: flex;
+        flex-direction: column; /* Stack children vertically */
+        justify-content: center; /* Center vertically */
+        align-items: center; /* Center horizontally */
+        padding: 50px;
+        position: relative;
+        height: 100%; /* Ensure it takes full height */
+    }
+    
+    .overlay-effect1 {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        /* background: rgba(255, 255, 255, 0.5); Adjusted for better visibility */
+        border-radius: 15px;
+        z-index: 1;
+    }
+    
+    .info-card1 {
+        /* background-color: rgba(255, 255, 255, 0.9); */
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
+        width: 600px;
+        max-width: 90%;
+        animation: fadeIn 1s ease-in-out;
+        background-color: aliceblue;
+        position: relative;
+        float: left;
+        z-index: 2;
+    }
+    
+    .emphasis {
+        color: #007bff; /* Highlight color */
+        font-weight: bold; /* Bold highlight */
+    }
+    
+    .info-card1::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        border: 5px dashed #4CAF50;
+        border-radius: 15px;
+        pointer-events: none;
+        z-index: 0;
+    }
+    
+    .info-card1 h1,
+    .info-card1 p {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .info-card1 h1::after {
+        content: '';
+        display: block;
+        height: 4px;
+        width: 100px;
+        background: linear-gradient(90deg, rgba(255, 0, 150, 0.8), rgba(0, 204, 255, 0.8));
+        margin-top: 5px;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+        }
+        to {
+            transform: translateX(0);
+        }
+    }
+    
+    /* Media Queries for Responsiveness */
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 2.5em; /* Smaller heading on smaller screens */
+        }
+        .info-card1 {
+            padding: 30px; /* Reduce padding for smaller devices */
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,485 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Farmers E-commerce{% endblock %}</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
+      }
+
+      /* Navbar Styles */
+      /* Navbar Animation */
+      /* Navbar Styles */
+      .navbar {
+        background-color: #28a745;
+        transition: background-color 0.3s ease-in-out,
+          transform 0.4s ease-in-out;
+      }
+
+      .navbar.scrolled {
+        background-color: #218838;
+        transform: translateY(0);
+      }
+
+      .navbar .navbar-brand {
+        color: white;
+        font-weight: bold;
+        font-size: 1.8rem;
+        animation: fadeInLogo 1s ease-in-out;
+      }
+
+      @keyframes fadeInLogo {
+        from {
+          opacity: 0;
+          transform: translateY(-50%);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .navbar .nav-link {
+        color: white;
+        padding: 10px;
+        transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out,
+          transform 0.3s ease-in-out;
+        border-radius: 5px; /* Smooth rounded edges */
+      }
+
+      .navbar .nav-link:hover {
+        color: #fff; /* Text color on hover */
+        background-color: #218838; /* Background color on hover */
+        transform: scale(1.05); /* Slight zoom effect on hover */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect on hover */
+      }
+
+      /* Hero Section Styles */
+      .hero-section {
+        background-image: url("{% static 'images/background.jpg' %}");
+        background-size: cover;
+        color: white;
+        padding: 120px 0;
+        text-align: center;
+        background-position: center;
+        background-blend-mode: overlay;
+        background-color: rgba(0, 0, 0, 0.6);
+        animation: fadeIn 2s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .hero-section h1 {
+        font-size: 3.5rem;
+        font-weight: bold;
+        animation: slideInDown 1s ease-in-out;
+      }
+
+      @keyframes slideInDown {
+        from {
+          transform: translateY(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .hero-section p {
+        font-size: 1.4rem;
+        margin-bottom: 30px;
+        animation: fadeIn 1.5s ease-in-out;
+      }
+
+      .hero-section .btn {
+        background-color: #006f38;
+        padding: 14px 40px;
+        font-size: 1.2rem;
+        border: none;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+      }
+
+      .hero-section .btn:hover {
+        background-color: #218838;
+        transform: scale(1.05);
+      }
+      /* Categories Heading Animation */
+      /* Categories Heading Animation with Effects */
+      h2.text-center {
+        opacity: 0;
+        transform: translateY(50px);
+        animation: fadeInUp 1s ease-in-out forwards;
+        color: #006f38;
+        letter-spacing: 3px;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        position: relative;
+      }
+
+      h2.text-center:hover {
+        color: #28a745;
+        transform: scale(1.1) rotate(1deg);
+        transition: transform 0.3s ease, color 0.3s ease;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Underline effect on hover */
+      h2.text-center::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -10px;
+        width: 100%;
+        height: 2px;
+        background-color: #006f38;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+      }
+
+      h2.text-center:hover::before {
+        transform: scaleX(1);
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Page Content */
+      .container {
+        margin-top: 50px;
+      }
+
+      /* Category Section Styles */
+      .category-card {
+        text-align: center;
+        padding: 20px;
+        border-radius: 50%;
+        background-size: cover; /* Makes image the background */
+        background-position: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 150px;
+        position: relative;
+        color: white; /* Ensures text is readable on the image */
+      }
+
+      .category-card h5 {
+        font-size: 1.8rem;
+        font-weight: bold;
+        background-color: rgba(
+          0,
+          0,
+          0,
+          0.5
+        ); /* Darken text background for better visibility */
+        padding: 5px;
+        border-radius: 50%;
+      }
+
+      .category-card:hover {
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        transform: translateY(-10px) scale(1.05);
+      }
+
+      .category-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4); /* Dark overlay to enhance visibility */
+        border-radius: inherit;
+      }
+
+      /* Footer Styles */
+      footer {
+        background-color: #006f38;
+        color: white;
+        padding: 30px 0;
+        text-align: center;
+        position: relative;
+      }
+
+      footer p {
+        margin: 0;
+      }
+
+      /* Scroll-to-top Button */
+      .scroll-top {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        background-color: #28a745;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 50%;
+        display: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+      }
+
+      .scroll-top:hover {
+        background-color: #7e8821;
+      }
+      /* Enhanced Search Bar Styles */
+      .search-bar {
+        width: 250px;
+        padding: 10px 15px;
+        border-radius: 50px;
+        border: 1px solid #28a745;
+        transition: all 0.4s ease-in-out;
+        background-color: #f8f9fa;
+      }
+
+      .search-bar:focus {
+        width: 300px; /* Expands on focus */
+        outline: none;
+        background-color: white; /* Changes background on focus */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-color: #218838;
+      }
+
+      /* Enhanced Search Button Styles */
+      .search-btn {
+        padding: 10px 20px;
+        border-radius: 50px;
+        background-color: transparent;
+        border: 2px solid #28a745;
+        transition: all 0.3s ease-in-out;
+        color: #28a745;
+      }
+
+      .search-btn:hover {
+        background-color: #218838; /* Changes background on hover */
+        color: white;
+        transform: translateY(-2px); /* Small lift effect */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+      }
+
+      .search-btn:focus {
+        outline: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <a class="navbar-brand" href="{% url 'home' %}"> AGRiFARM </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">Store</a>
+          </li>
+          {% if user.is_authenticated %} {% if user.role == 'Farmer' or user.role == 'Cooperative' %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'add_item' %}">Add Item</a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'cart' %}">Cart</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+          </li>
+          {% endif %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'about_us'%}">About Us</a></li>
+        </ul>
+        <form
+          class="form-inline my-2 my-lg-0"
+          action="{% url 'search' %}"
+          method="GET"
+        >
+          <input
+            class="form-control mr-sm-2 search-bar"
+            type="search"
+            placeholder="Search for products..."
+            aria-label="Search"
+            name="q"
+          />
+          <button
+            class="btn btn-outline-success my-2 my-sm-0 search-btn"
+            type="submit"
+          >
+            Search
+          </button>
+        </form>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+      <div class="container">
+        <h1>Welcome to AGRiFARM</h1>
+        <p>"Your one-stop solution for farm-fresh produce!"</p>
+        <a href="{% url 'home' %}" class="btn btn-primary"
+          >Shop Now</a
+        >
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">{% block content %}{% endblock %}</div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <!-- Categories Links -->
+          <div class="col-md-4">
+            <h4>Categories</h4>
+            <ul class="list-unstyled">
+              <li><a href="{% url 'category_page' 1 %}" class="text-white">Fruits</a></li>
+              <li><a href="{% url 'category_page' 2 %}" class="text-white">Vegetables</a></li>
+              <li><a href="{% url 'category_page' 3 %}" class="text-white">Dairy</a></li>
+              <li><a href="{% url 'category_page' 4 %}" class="text-white">Seeds/Grains</a></li>
+              <li><a href="{% url 'category_page' 5 %}" class="text-white">Oil</a></li>
+              <li><a href="{% url 'category_page' 6 %}" class="text-white">Agri Tools</a></li>
+              <li><a href="{% url 'category_page' 7 %}" class="text-white">Fertilizers</a></li>
+
+            </ul>
+          </div>
+
+          <!-- About Us Link -->
+          <div class="col-md-4">
+            <h4>Quick Links</h4>
+            <ul class="list-unstyled">
+              <li><a href="{% url 'about_us' %}" class="text-white">About Us</a></li>
+              <li><a href="mailto:darshidr59328@gmail.com.com" class="text-white">Contact Us</a></li>
+            </ul>
+          </div>
+
+          <!-- Social Media Links -->
+          <div class="col-md-4">
+            <h4>Follow Us</h4>
+            <a href="https://www.facebook.com" class="text-white mr-3" style="font-size: 1.9em;">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://www.instagram.com" class="text-white mr-3" style="font-size: 1.9em;">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.linkedin.com" class="text-white mr-3" style="font-size: 1.9em;">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="mailto:darshidr59328@gmail.com" class="text-white"  style="font-size: 1.9em;">
+
+              <i class="fas fa-envelope"></i>
+            </a>
+          </div>
+        </div>
+        <hr class="bg-white" />
+        <p>&copy; 2026  AGRiFARM Farmers E-commerce. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <!-- FontAwesome for Social Icons -->
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
+
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" id="scrollTopBtn">&#8679;</button>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      // Scroll-to-top button functionality
+      const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+      window.onscroll = function () {
+        if (
+          document.body.scrollTop > 100 ||
+          document.documentElement.scrollTop > 100
+        ) {
+          scrollTopBtn.style.display = "block";
+        } else {
+          scrollTopBtn.style.display = "none";
+        }
+      };
+
+      scrollTopBtn.onclick = function () {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+      };
+
+      // Navbar color change on scroll
+      window.addEventListener("scroll", function () {
+        var navbar = document.querySelector(".navbar");
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+    </script>
+  </body>
+</html>

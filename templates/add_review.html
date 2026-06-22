@@ -1,0 +1,91 @@
+<!-- review.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4 font-weight-bold">Review for {{ item.name }}</h2>
+    <div class="row align-items-center"> <!-- Added align-items-center to center vertically -->
+        <div class="col-md-4 text-center"> <!-- Column for the item image -->
+            {% if item.image %}
+            <img src="{{ item.image.url }}" alt="{{ item.name }}" class="img-fluid rounded shadow-sm" />
+            {% else %}
+            <img src="{% static 'images/default-product.jpg' %}" alt="{{ item.name }}" class="img-fluid rounded shadow-sm" />
+            {% endif %}
+        </div>
+        <div class="col-md-8"> <!-- Column for the review form -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label class="font-weight-bold">Rating</label>
+                            <div class="rating">
+                                <input type="radio" name="rating" value="5" id="star5" />
+                                <label for="star5" class="star">&#9733;</label>
+                                <input type="radio" name="rating" value="4" id="star4" />
+                                <label for="star4" class="star">&#9733;</label>
+                                <input type="radio" name="rating" value="3" id="star3" />
+                                <label for="star3" class="star">&#9733;</label>
+                                <input type="radio" name="rating" value="2" id="star2" />
+                                <label for="star2" class="star">&#9733;</label>
+                                <input type="radio" name="rating" value="1" id="star1" />
+                                <label for="star1" class="star">&#9733;</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="feedback" class="font-weight-bold">Feedback</label>
+                            <textarea name="feedback" class="form-control" rows="4" required></textarea>
+                        </div>
+                        <div style="text-align: center;">
+                        <button type="submit"  class="btn" style="background-color: #218838; color: white;">Submit Review</button>
+                    </form>
+                </div>
+
+
+                    <p class="text-center mt-3">
+                        <a href="{% url 'product_detail' item.id %}" class="btn btn-secondary">Back to Product</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .rating {
+        direction: rtl; /* Right to left for star rating */
+        display: flex;
+        justify-content: center;
+        margin-bottom: 15px; /* Spacing below rating */
+    }
+    
+    .rating input {
+        display: none; /* Hide radio buttons */
+    }
+    
+    .rating label {
+        font-size: 2rem; /* Star size */
+        color: #ddd; /* Default star color */
+        cursor: pointer;
+        transition: color 0.2s ease; /* Smooth transition for color change */
+    }
+    
+    .rating input:checked ~ label {
+        color: #f39c12; /* Selected star color */
+    }
+    
+    .rating label:hover,
+    .rating label:hover ~ label {
+        color: #f39c12; /* Hover star color */
+    }
+
+    /* Additional styles for image */
+    img {
+        max-width: 100%; /* Ensures image fits within column */
+        height: auto; /* Keeps image aspect ratio */
+        margin-bottom: 20px; /* Space below the image */
+    }
+</style>
+{% endblock %}

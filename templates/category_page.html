@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Categories Section -->
+<div class="container">
+    <h2 class="text-center my-4">Categories</h2>
+  
+    <div id="categoryCarousel" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        {% for category in categories %} {% if forloop.counter0|divisibleby:4 %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <div class="row justify-content-center">
+            {% endif %}
+            <div class="col-md-3">
+              <a href="{% url 'category_page' category.id %}">
+                <div
+                  class="category-card"
+                  style="background-image: url('{% static 'images/' %}{{ category.name }}.jpg');"
+                >
+                  <h5>{{ category.name }}</h5>
+                </div>
+              </a>
+            </div>
+            {% if forloop.counter|divisibleby:4 or forloop.last %}
+          </div>
+        </div>
+        {% endif %} {% endfor %}
+      </div>
+  
+      <!-- Carousel controls -->
+      <a
+        class="carousel-control-prev"
+        href="#categoryCarousel"
+        role="button"
+        data-slide="prev"
+      >
+        <span class="carousel-control-prev-icon"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a
+        class="carousel-control-next"
+        href="#categoryCarousel"
+        role="button"
+        data-slide="next"
+      >
+        <span class="carousel-control-next-icon"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </div>
+
+<h2 class="text-center font-weight-bold" style="font-size: 2rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;">{{ category.name }}</h2>
+
+<!-- Filter Options -->
+<div class="text-center mb-4">
+    <form method="GET" class="form-inline justify-content-center">
+        <select name="sort" class="form-control mb-2 mr-2" style="width: 200px;">
+            <option value="price">Sort by Price</option>
+            <option value="alphabet">Sort by Alphabet</option>
+            <option value="date">Sort by Date</option>
+        </select>
+        <button type="submit" class="btn btn-secondary mb-2" style="background-color: #218838; color: white;" >Apply</button>
+    </form>
+</div>
+
+<div class="row">
+    {% for item in items %}
+        <div class="col-md-4 mb-4 d-flex align-items-stretch">
+            <div class="product-card text-center shadow-sm p-3 bg-white rounded">
+                <a href="{% url 'product_detail' item.id %}" class="a">
+                    {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.name }}" class="img-fluid mb-3 product-image">
+                    {% else %}
+                    <img src="{% static 'images/default-product.jpg' %}" alt="{{ item.name }}" class="img-fluid mb-3 product-image">
+                    {% endif %}
+                </a>
+                <h5 class="card-title">{{ item.name }}</h5>
+                {% if item.farmer.role == 'Cooperative' %}
+                <p><span class="badge badge-info">Cooperative: {{ item.farmer.username }}</span></p>
+                {% endif %}
+                <p class="text-muted">XAF {{ item.price }}</p>
+
+                <a href="{% url 'product_detail' item.id %}" class="btn" style="background-color: #218838; color: white;">View Details</a>
+                <a href="{% url 'add_to_cart' item.id %}" class="btn btn-outline-success mt-2" >Add to Cart</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- CSS for Card Hover Effect -->
+<style>
+    .product-card {
+        height: 400px; /* Fixed height for uniformity */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Space out content evenly */
+        transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+        overflow: hidden; /* Ensure child elements don't overflow */
+    }
+
+    .product-card:hover {
+        transform: scale(1.05); /* Slightly scale the card */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        background-color: #f9f9f9; /* Change background color on hover */
+    }
+
+    .product-image {
+        width: 100%; /* Make images responsive to the card width */
+        height: 200px; /* Fixed height for uniformity */
+        object-fit: cover; /* Ensure images cover the space */
+        border-radius: 8px;
+        transition: opacity 0.3s; /* Fade effect */
+    }
+
+    .product-card:hover .product-image {
+        opacity: 0.9; /* Slightly fade image on hover */
+    }
+
+    .a {
+        text-decoration: none;
+    }
+
+    .product-card h5 {
+        font-size: 1.2rem;
+        color: #333;
+        font-weight: bold;
+        margin: 10px 0;
+    }
+
+    .product-card p {
+        font-size: 1rem;
+        color: #777;
+    }
+
+    .product-card a.btn {
+        margin-top: auto; /* Pushes the buttons to the bottom */
+        width: 100%; /* Full width for buttons */
+        transition: background-color 0.3s, color 0.3s; /* Transition for buttons */
+    }
+
+    .product-card a.btn:hover {
+        background-color: #28a745; /* Darker green for 'View Details' */
+        color: white; /* Change text color to white */
+    }
+
+    .product-card a.btn-outline-success:hover {
+        background-color: #28a745; /* Darker green for 'Add to Cart' */
+        color: white; /* Change text color to white */
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .product-card {
+            height: 350px; /* Adjust height for smaller screens */
+        }
+
+        .product-image {
+            height: 150px; /* Fixed height for smaller screens */
+        }
+
+        .product-card h5 {
+            font-size: 1.1rem; /* Adjust font size */
+        }
+    }
+
+   
+  .btn-outline-success:hover {
+    background-color: #28a745;  /* Bootstrap's success color */
+    color: white;}
+</style>
+
+{% endblock %}

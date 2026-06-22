@@ -1,0 +1,212 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<style>
+  /* Profile card styling */
+  .profile-container {
+    display: flex;
+    flex-direction: column; /* Change direction to column */
+    align-items: center;
+    margin: 50px auto;
+    max-width: 1200px;
+  }
+
+  .profile-card {
+    width: 60%; /* Adjust width */
+    padding: 30px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-bottom: 30px; /* Add margin to separate from order history */
+  }
+
+  .profile-image {
+    margin-bottom: 20px;
+    border-radius: 50%;
+    border: 5px solid #28a745;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+  }
+
+  h1 {
+    font-size: 28px;
+    color: #333;
+  }
+
+  p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #666;
+  }
+
+  .profile-links {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .profile-links a {
+    text-decoration: none;
+    color: #28a745;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  .profile-links a:hover {
+    color: #155724;
+  }
+
+  /* Order history section */
+  .order-history {
+    width: 100%; /* Adjust to full width below the profile card */
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .order-history h3 {
+    font-size: 24px;
+    color: #28a745;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .order-history-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .order-history-column {
+    width: 48%; /* Set width for two columns */
+    margin-bottom: 15px;
+  }
+
+  .order-history ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .order-history li {
+    background-color: #e9ecef;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .order-history li strong {
+    color: #333;
+  }
+
+  .order-history .order-items ul {
+    list-style-type: none;
+    padding-left: 20px;
+  }
+
+  .order-history .order-items li {
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    background-color: #28a745;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .btn-primary:hover {
+    background-color: #218838;
+  }
+
+  .shadow-container {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Apply shadow to container */
+    border-radius: 15px; /* Optional: round the corners of the container */
+    padding: 20px; /* Add padding inside the container */
+    background-color: #28a745; /* Add a white background for contrast */
+  }
+</style>
+
+<h2 class="text-center">Profile</h2>
+<div class="profile-container shadow-container">
+  <!-- Profile card -->
+  <div class="profile-card">
+    <img
+      src="{% static 'images/default_profile.jpg' %}"
+      alt="Profile Image"
+      class="profile-image"
+    />
+    <h2 class="text-center">{{ user.username }}</h2>
+    {% if user.role == 'Cooperative' %}
+    <p><span class="badge badge-info">Cooperative Account</span></p>
+    {% elif user.role == 'Farmer' %}
+    <p><span class="badge badge-success">Farmer Account</span></p>
+    {% endif %}
+    <p>Email: {{ user.email }}</p>
+    <p>Address: {{ user.address }}</p>
+    <p>Phone: {{ user.phone }}</p>
+
+    <div class="profile-links">
+      {% if user.role == 'Farmer' or user.role == 'Cooperative' %}
+      <a href="{% url 'add_item' %}">Add Product</a>
+      {% endif %}
+      <a href="#">Edit Profile</a>
+      <a href="#">Change Password</a>
+    </div>
+  </div>
+</div>
+
+<!-- Order history -->
+<div class="order-history">
+  <h3>Order History</h3>
+  <div class="order-history-container">
+    <div class="order-history-column">
+      <ul>
+        {% for order in orders %} {% if forloop.counter0|divisibleby:2 %}
+        <li>
+          <strong>Order #{{ order.id }} - {{ order.status }}</strong>
+          <p>Total: XAF{{ order.total }} - Date: {{ order.ordered_date }}</p>
+          <div class="order-items">
+            <ul>
+              {% for order_item in order.order_items.all %}
+              <li>
+                {{ order_item.item.name }} - XAF{{ order_item.item.price }} x {{
+                order_item.quantity }}
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </li>
+        {% endif %} {% endfor %}
+      </ul>
+    </div>
+    <div class="order-history-column">
+      <ul>
+        {% for order in orders %} {% if not forloop.counter0|divisibleby:2 %}
+        <li>
+          <strong>Order #{{ order.id }} - {{ order.status }}</strong>
+          <p>Total: XAF{{ order.total }} - Date: {{ order.ordered_date }}</p>
+          <div class="order-items">
+            <ul>
+              {% for order_item in order.order_items.all %}
+              <li>
+                {{ order_item.item.name }} - XAF{{ order_item.item.price }} x {{
+                order_item.quantity }}
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </li>
+        {% endif %} {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

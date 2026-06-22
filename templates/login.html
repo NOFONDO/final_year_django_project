@@ -1,0 +1,59 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="container mt-5">
+  <div class="card shadow-sm">
+    <!-- Added shadow for a raised effect -->
+    <div class="card-body">
+      <h2 class="text-center">Login</h2>
+      <form method="POST">
+        {% csrf_token %}
+        <div class="form-group mb-3">
+          <label for="username" class="font-weight-bold">Phone Number</label>
+          <input type="text" name="username" class="form-control" required />
+        </div>
+        <div class="form-group mb-3">
+          <label for="password" class="font-weight-bold">Password</label>
+          <input
+            type="password"
+            name="password"
+            class="form-control"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-success btn-lg btn-block">
+          Login
+        </button>
+      </form>
+      <p class="text-center mt-3">
+        Don't have an account? <a href="{% url 'register' %}">Register here</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Additional styles for card and button */
+  .card {
+    border-radius: 10px; /* Rounded corners for the card */
+    overflow: hidden; /* Ensures the inner elements respect the card's border radius */
+  }
+
+  .card-body {
+    background-color: #f8f9fa; /* Light background for card body */
+  }
+
+  .btn-success {
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transition for button hover effect */
+  }
+
+  .btn-success:hover {
+    background-color: #28a745; /* Darker green on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+  }
+
+  @media (max-width: 576px) {
+    .container {
+      padding: 0 15px; /* Responsive padding for mobile view */
+    }
+  }
+</style>
+{% endblock %}
