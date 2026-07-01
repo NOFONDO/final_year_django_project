@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card border-warning shadow">
+        <div class="card-header bg-warning text-dark">
+          <h4 class="mb-0">⏳ Account Verification Pending</h4>
+        </div>
+        <div class="card-body">
+          <p class="lead">
+            Thank you for registering as a <strong>{{ user.get_role_display }}</strong> on FarmConnect Cameroon!
+          </p>
+          <hr>
+          <h5>What happens next?</h5>
+          <ol>
+            <li>Our admin team will review your <strong>National ID Card (NIC)</strong> document.</li>
+            <li>This process takes <strong>24–48 hours</strong>.</li>
+            <li>Once approved, you will be able to list your products on the marketplace.</li>
+          </ol>
+
+          {% if user.verification_status == 'Rejected' %}
+          <div class="alert alert-danger mt-3">
+            <strong>❌ Your application was rejected.</strong><br>
+            Reason: {{ user.rejection_reason }}<br>
+            <a href="{% url 'profile' %}" class="btn btn-sm btn-outline-danger mt-2">Update Your Documents</a>
+          </div>
+          {% elif user.verification_status == 'Approved' %}
+          <div class="alert alert-success mt-3">
+            <strong>✅ Your account is approved!</strong>
+            <a href="{% url 'add_item' %}" class="btn btn-success mt-2">Start Listing Products</a>
+          </div>
+          {% else %}
+          <div class="alert alert-info mt-3">
+            <strong>Current Status:</strong> Pending Review<br>
+            NIC Submitted: {% if user.nic_document %}✅ Yes{% else %}❌ Not uploaded{% endif %}
+          </div>
+          {% endif %}
+
+          <div class="mt-4">
+            <a href="{% url 'home' %}" class="btn btn-primary">Browse the Marketplace</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -4,7 +4,7 @@
     <!-- Added shadow for a raised effect -->
     <div class="card-body">
       <h2 class="text-center">Login</h2>
-      <form method="POST">
+      <form method="POST" action="{% url 'login' %}">
         {% csrf_token %}
         <div class="form-group mb-3">
           <label for="username" class="font-weight-bold">Phone Number</label>

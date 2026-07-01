@@ -120,6 +120,16 @@
             </button>
             <!-- Add to cart button -->
           </form>
+          {% if user.is_authenticated and user != item.farmer %}
+          <a href="{% url 'start_conversation_item' item.farmer.id item.id %}"
+             class="btn btn-success mt-2">
+            💬 Contact Farmer
+          </a>
+          {% elif not user.is_authenticated %}
+          <a href="{% url 'login' %}" class="btn btn-outline-success mt-2">
+            Login to Contact Farmer
+          </a>
+          {% endif %}
           <hr />
         </div>
       </div>

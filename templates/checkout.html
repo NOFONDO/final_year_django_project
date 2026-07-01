@@ -20,20 +20,20 @@
               </tr>
             </thead>
             <tbody>
-              {% for order_item in order.order_items.all %}
+              {% for cart_item in cart.cart_items.all %}
               <tr class="table-light">
                 <!-- Light background for alternate rows -->
-                <td>{{ order_item.item.name }}</td>
-                <td>{{ order_item.quantity }}</td>
-                <td>XAF {{ order_item.item.price }}</td>
-                <td>XAF {{ order_item.get_total_item_price }}</td>
+                <td>{{ cart_item.item.name }}</td>
+                <td>{{ cart_item.quantity }}</td>
+                <td>XAF {{ cart_item.item.price }}</td>
+                <td>XAF {{ cart_item.get_item_total }}</td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
         </div>
         <div class="card-footer text-center">
-          <h5 class="card-title">Total: XAF {{ order.get_total_order_price }}</h5>
+          <h5 class="card-title">Total: XAF {{ cart.get_total_price }}</h5>
         </div>
       </div>
     </div>
@@ -53,7 +53,7 @@
                 class="form-control"
                 id="billing_address"
                 name="billing_address"
-                value="{{ order.billing_address }}"
+                value=""
                 required
                 style="max-width: 400px; margin: 0 auto"
               />
@@ -65,7 +65,7 @@
                 class="form-control"
                 id="shipping_address"
                 name="shipping_address"
-                value="{{ order.shipping_address }}"
+                value=""
                 required
                 style="max-width: 400px; margin: 0 auto"
               />
@@ -77,14 +77,13 @@
                 class="form-control"
                 id="total"
                 name="total"
-                value="{{ order.get_total_order_price }}"
+                value="{{ cart.get_total_price }}"
                 style="max-width: 400px; margin: 0 auto"
               />
             </div>
             <div class="d-flex justify-content-between align-items-center mt-4">
-              <h4>Total Amount: XAF {{ order.get_total_order_price }}</h4>
-              <a href="{% url 'payment_page' %}" class="btn" style="background-color: #060707; color: white;">Proceed to Checkout</a
-              >
+              <h4>Total Amount: XAF {{ cart.get_total_price }}</h4>
+              <button type="submit" class="btn" style="background-color: #060707; color: white;">Complete Order & Pay</button>
             </div>
 
             <!-- Display form errors -->

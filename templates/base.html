@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}Farmers E-commerce{% endblock %}</title>
+    <title>FarmLink Cameroon — Fresh From The Farm</title>
     <link
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       rel="stylesheet"
@@ -309,7 +309,7 @@
   <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light">
-      <a class="navbar-brand" href="{% url 'home' %}"> AGRiFARM </a>
+      <a class="navbar-brand" href="{% url 'home' %}">FarmLink Cameroon</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -324,19 +324,32 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'home' %}">Store</a>
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
           </li>
-          {% if user.is_authenticated %} {% if user.role == 'Farmer' or user.role == 'Cooperative' %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'add_item' %}">Add Item</a>
+            <a class="nav-link" href="{% url 'search' %}">Search</a>
           </li>
-          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'about_us' %}">About Us</a>
+          </li>
+          {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'cart' %}">Cart</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="{% url 'inbox' %}">Messages</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="{% url 'profile' %}">Profile</a>
           </li>
+          {% if user.role == 'Farmer' or user.role == 'Cooperative' %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'farmer_dashboard' %}">My Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'add_item' %}">Add Product</a>
+          </li>
+          {% endif %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
           </li>
@@ -348,7 +361,6 @@
             <a class="nav-link" href="{% url 'register' %}">Register</a>
           </li>
           {% endif %}
-          <li class="nav-item"><a class="nav-link" href="{% url 'about_us'%}">About Us</a></li>
         </ul>
         <form
           class="form-inline my-2 my-lg-0"
@@ -375,7 +387,7 @@
     <!-- Hero Section -->
     <header class="hero-section">
       <div class="container">
-        <h1>Welcome to AGRiFARM</h1>
+        <h1>Welcome to FarmLink Cameroon</h1>
         <p>"Your one-stop solution for farm-fresh produce!"</p>
         <a href="{% url 'home' %}" class="btn btn-primary"
           >Shop Now</a
@@ -433,7 +445,7 @@
           </div>
         </div>
         <hr class="bg-white" />
-        <p>&copy; 2026  AGRiFARM Farmers E-commerce. All Rights Reserved.</p>
+        <p>&copy; 2026 FarmLink Cameroon. All Rights Reserved.</p>
       </div>
     </footer>
 

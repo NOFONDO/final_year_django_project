@@ -1,23 +1,43 @@
 from django.urls import path
-from .views import home, category_page, product_detail, cart, checkout, profile, add_item, register, login_view, add_review, logout_view, search,add_to_cart,remove_from_cart,payment_page,process_payment,payment_success, about_us
+from . import views
 
 urlpatterns = [
-    path('', home, name='home'),
-    path('category/<int:category_id>/', category_page, name='category_page'),  # Updated line
-    path('product/<int:item_id>/', product_detail, name='product_detail'),
-    path('cart/', cart, name='cart'),
-    path('checkout/', checkout, name='checkout'),
-    path('profile/', profile, name='profile'),
-    path('add_item/', add_item, name='add_item'),
-    path('register/', register, name='register'),
-    path('login/', login_view, name='login'),
-    path('add_review/<int:item_id>/', add_review, name='add_review'),
-    path('logout/', logout_view, name='logout'),
-    path('search/', search, name='search'),
-    path('add_to_cart/<int:item_id>/', add_to_cart, name='add_to_cart'),
-    path('remove_from_cart/<int:item_id>/', remove_from_cart, name='remove_from_cart'),
-    path('payment/', payment_page, name='payment_page'),
-    path('process-payment/', process_payment, name='process_payment'),
-    path('payment-success/<str:transaction_id>/', payment_success, name='payment_success'),
-    path('about-us/', about_us, name='about_us'),
+    # ---- Core pages ----
+    path('', views.home, name='home'),
+    path('category/<int:category_id>/', views.category_page, name='category_page'),
+    path('product/<int:item_id>/', views.product_detail, name='product_detail'),
+    path('about-us/', views.about_us, name='about_us'),
+    path('search/', views.search, name='search'),
+
+    # ---- Auth ----
+    path('register/', views.register, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('profile/', views.profile, name='profile'),
+
+    # ---- Verification ----
+    path('verification-pending/', views.verification_pending, name='verification_pending'),
+
+    # ---- Farmer tools ----
+    path('add-item/', views.add_item, name='add_item'),
+    path('dashboard/', views.farmer_dashboard, name='farmer_dashboard'),
+
+    # ---- Reviews ----
+    path('add-review/<int:item_id>/', views.add_review, name='add_review'),
+
+    # ---- Cart ----
+    path('cart/', views.cart, name='cart'),
+    path('add-to-cart/<int:item_id>/', views.add_to_cart, name='add_to_cart'),
+    path('remove-from-cart/<int:item_id>/', views.remove_from_cart, name='remove_from_cart'),
+
+    # ---- Checkout & Payment ----
+    path('checkout/', views.checkout, name='checkout'),
+    path('process-payment/<int:order_id>/', views.process_payment, name='process_payment'),
+    path('payment-success/<str:transaction_id>/', views.payment_success, name='payment_success'),
+
+    # ---- Messaging ----
+    path('inbox/', views.inbox, name='inbox'),
+    path('messages/<int:conversation_id>/', views.conversation_detail, name='conversation_detail'),
+    path('contact/<int:farmer_id>/', views.start_conversation, name='start_conversation'),
+    path('contact/<int:farmer_id>/item/<int:item_id>/', views.start_conversation, name='start_conversation_item'),
 ]

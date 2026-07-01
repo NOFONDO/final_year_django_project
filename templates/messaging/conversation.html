@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <a href="{% url 'inbox' %}" class="btn btn-sm btn-outline-secondary">← Back to Inbox</a>
+      <h4 class="d-inline ml-3">
+        {% for participant in conversation.participants.all %}
+          {% if participant != request.user %}{{ participant.username }}{% endif %}
+        {% endfor %}
+      </h4>
+    </div>
+    {% if conversation.item %}
+    <small class="text-muted">
+      Re: <a href="{% url 'product_detail' conversation.item.id %}">{{ conversation.item.name }}</a>
+    </small>
+    {% endif %}
+  </div>
+
+  <div class="card shadow" style="height: 450px; overflow-y: auto;" id="chat-box">
+    <div class="card-body">
+      {% for msg in all_messages %}
+      <div class="d-flex {% if msg.sender == request.user %}justify-content-end{% else %}justify-content-start{% endif %} mb-2">
+        <div class="p-2 rounded {% if msg.sender == request.user %}bg-primary text-white{% else %}bg-light text-dark{% endif %}"
+             style="max-width: 70%;">
+          <small class="font-weight-bold">{{ msg.sender.username }}</small><br>
+          {{ msg.content }}
+          <br><small class="{% if msg.sender == request.user %}text-white-50{% else %}text-muted{% endif %}">
+            {{ msg.timestamp|date:"M d, H:i" }}
+          </small>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-center text-muted mt-5">No messages yet. Say hello!</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="card mt-3">
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        {{ form.content }}
+        <button type="submit" class="btn btn-primary mt-2">Send Message</button>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  // Auto-scroll to bottom of chat
+  var chatBox = document.getElementById('chat-box');
+  chatBox.scrollTop = chatBox.scrollHeight;
+</script>
+{% endblock %}

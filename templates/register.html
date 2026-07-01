@@ -1,90 +1,110 @@
-<!-- register.html -->
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
 <div class="container mt-5">
-  <div class="card">
-    <div class="card-body">
-      <h2 class="text-center">Register</h2>
-      <form method="POST">
-        {% csrf_token %} {% if form.errors %}
-        <div class="alert alert-danger">
-          <ul>
-            {% for field, errors in form.errors.items %} {% for error in errors %}
-            <li>{{ field|capfirst }}: {{ error }}</li>
-            {% endfor %} {% endfor %}
-          </ul>
-        </div>
-        {% endif %}
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <div class="card shadow">
+        <div class="card-body">
+          <h2 class="text-center" style="color: #2E7D32;">Register</h2>
 
-        <div class="form-group">
-          <label for="phone" class="text-center font-weight-bold">Phone Number</label>
-          <input type="text" name="phone" class="form-control" required />
-        </div>
+          {% if form.errors %}
+          <div class="alert alert-danger">
+            <ul class="mb-0">
+              {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                <li><strong>{{ field|capfirst }}:</strong> {{ error }}</li>
+                {% endfor %}
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
 
-        <div class="form-group">
-          <label for="username" class="text-center font-weight-bold"
-            >Username</label
-          >
-          <input type="text" name="username" class="form-control" required />
-        </div>
+          {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+          {% endif %}
 
-        <div class="form-group">
-          <label for="email" class="text-center font-weight-bold">Email</label>
-          <input type="email" name="email" class="form-control" required />
-        </div>
+          <!-- enctype is REQUIRED for file/NIC upload to work -->
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-        <div class="form-group">
-          <label for="password" class="text-center font-weight-bold"
-            >Password</label
-          >
-          <input
-            type="password"
-            name="password"
-            class="form-control"
-            required
-          />
-        </div>
+            <div class="form-group">
+              <label class="font-weight-bold">Phone Number</label>
+              <input type="text" name="phone" class="form-control" placeholder="e.g. 6XXXXXXXX" required />
+            </div>
 
-        <div class="form-group">
-          <label
-            for="password_confirmation"
-            class="text-center font-weight-bold"
-            >Confirm Password</label
-          >
-          <input
-            type="password"
-            name="password_confirmation"
-            class="form-control"
-            required
-          />
-        </div>
+            <div class="form-group">
+              <label class="font-weight-bold">Username</label>
+              <input type="text" name="username" class="form-control" required />
+            </div>
 
-        <div class="form-group">
-          <label for="role" class="text-center font-weight-bold">Role</label>
-          <select name="role" class="form-control" required>
-            <option value="">Select Role</option>
-            <option value="Farmer">Farmer</option>
-            <option value="Consumer">Consumer</option>
-            <option value="Buyer">Buyer</option>
-            <option value="Cooperative">Cooperative</option>
-            <option value="Admin">Admin</option>
-          </select>
-        </div>
+            <div class="form-group">
+              <label class="font-weight-bold">Email</label>
+              <input type="email" name="email" class="form-control" />
+            </div>
 
-        <div class="form-group">
-          <label for="address" class="text-center font-weight-bold"
-            >Address</label
-          >
-          <input type="text" name="address" class="form-control" required />
-        </div>
+            <div class="form-group">
+              <label class="font-weight-bold">Password</label>
+              <input type="password" name="password" class="form-control" required />
+            </div>
 
-        <button type="submit" class="btn btn-success btn-block">
-          Register
-        </button>
-      </form>
-      <p class="text-center mt-3">
-        Already have an account? <a href="{% url 'login' %}">Login here</a>
-      </p>
+            <div class="form-group">
+              <label class="font-weight-bold">Address</label>
+              <textarea name="address" class="form-control" rows="2"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="font-weight-bold">Role</label>
+              <select name="role" class="form-control" required id="roleSelect">
+                <option value="">Select Role</option>
+                <option value="Farmer">Farmer</option>
+                <option value="Consumer">Consumer / Buyer</option>
+                <option value="Cooperative">Cooperative</option>
+              </select>
+            </div>
+
+            <!-- NIC UPLOAD — shown only for Farmer and Cooperative -->
+            <div class="form-group" id="nicSection" style="display:none;">
+              <div class="alert alert-warning py-2">
+                <strong>📋 Identity Verification Required</strong><br>
+                Farmers and Cooperatives must upload a photo of their
+                <strong>National ID Card (CNI)</strong>. Your account will be
+                reviewed and approved by an admin before you can list products.
+              </div>
+              <label class="font-weight-bold">National ID Card (NIC / CNI) Photo</label>
+              <input type="file" name="nic_document" class="form-control-file"
+                     accept="image/*,.pdf" id="nicInput" />
+              <small class="text-muted">Accepted: JPG, PNG, PDF</small>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-block mt-3">
+              Register
+            </button>
+          </form>
+
+          <p class="text-center mt-3">
+            Already have an account? <a href="{% url 'login' %}">Login here</a>
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+  // Show NIC upload field only when Farmer or Cooperative is selected
+  document.getElementById('roleSelect').addEventListener('change', function() {
+    var nicSection = document.getElementById('nicSection');
+    var nicInput = document.getElementById('nicInput');
+    if (this.value === 'Farmer' || this.value === 'Cooperative') {
+      nicSection.style.display = 'block';
+      nicInput.setAttribute('required', 'required');
+    } else {
+      nicSection.style.display = 'none';
+      nicInput.removeAttribute('required');
+    }
+  });
+</script>
 {% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-4">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <div class="card shadow">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0">💬 Contact {{ farmer.username }}</h5>
+        </div>
+        <div class="card-body">
+          {% if item %}
+          <p>Send a message about <strong>{{ item.name }}</strong> ({{ item.price }} XAF)</p>
+          {% endif %}
+          <p class="text-muted">Farmer phone: {{ farmer.phone }}</p>
+          <form method="post">
+            {% csrf_token %}
+            {{ form.content }}
+            <button type="submit" class="btn btn-success mt-3">Send Message</button>
+            <a href="{% url 'inbox' %}" class="btn btn-outline-secondary mt-3 ml-2">View Inbox</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
