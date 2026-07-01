@@ -71,7 +71,7 @@ The agricultural industry faces significant challenges, especially for small-sca
 
 ---
 
-## 🌟 **Future Enhancements**
+##  **Future Enhancements**
 - **Mobile Application**: Launching an app to reach rural areas with smartphone access.  
 - **Multilingual Support**: Regional languages for inclusivity across states.  
 - **AI Recommendations**: Pricing suggestions based on market trends and demand.  
